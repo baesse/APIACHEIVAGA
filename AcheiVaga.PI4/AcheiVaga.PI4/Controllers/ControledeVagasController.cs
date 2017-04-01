@@ -9,23 +9,41 @@ namespace AcheiVaga.PI4.Controllers
 {
     public class ControledeVagasController : ApiController
     {
+        //[HttpGet]
+        //public List<Models.Vaga> GetVagas()
+        //{
+        //    Models.Vaga vagas = new Models.Vaga();
+        //    return vagas.GetTodasasVagasOcupadas();
+        //}
+
+
+        //[HttpPut]
+        //public string PutOcuparVaga(int id)
+        //{
+        //    Models.Vaga vagas = new Models.Vaga();
+
+        //    vagas.PutRegistrarVaga(id);
+
+        //    return "Vaga";
+            
+        //}
+
+
         [HttpGet]
-        public List<Models.Vaga> GetVagas()
+        public string GetJsonVgasOcupadas()
         {
-            Models.Vaga vagas = new Models.Vaga();
-            return vagas.GetTodasasVagasOcupadas();
+            Models.Vaga vaga = new Models.Vaga();
+            return vaga.ListadeVagas();
+
         }
 
 
-        [HttpPut]
-        public string PutOcuparVaga(int id)
+        [HttpPost]
+        public string PostNovaVaga()
         {
-            Models.Vaga vagas = new Models.Vaga();
-
-            vagas.PutRegistrarVaga(id);
-
-            return "Vaga";
-            
+            Models.Vaga vaga = new Models.Vaga();
+            vaga.CadastrodeVaga();
+            return "Vaga cadastrada";
         }
 
     }

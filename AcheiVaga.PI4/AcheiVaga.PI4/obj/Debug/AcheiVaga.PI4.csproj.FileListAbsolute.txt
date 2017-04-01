@@ -39,3 +39,10 @@ D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\System.Web.Http.
 D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\obj\Debug\AcheiVaga.PI4.csprojResolveAssemblyReference.cache
 D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\obj\Debug\AcheiVaga.PI4.dll
 D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\obj\Debug\AcheiVaga.PI4.pdb
+D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\MongoDB.Bson.dll
+D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\MongoDB.Driver.Core.dll
+D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\MongoDB.Driver.dll
+D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\MongoDB.Bson.xml
+D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\MongoDB.Driver.xml
+D:\RepositoriosGit\APIACHEIVAGA\AcheiVaga.PI4\AcheiVaga.PI4\bin\MongoDB.Driver.Core.xml
