@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+
 namespace AcheiVaga.PI4.Controllers
 {
     public class ControledeVagasController : ApiController
@@ -28,6 +29,8 @@ namespace AcheiVaga.PI4.Controllers
             vaga.CadastrodeVaga();
             return "Vaga cadastrada";
         }
+
+        
 
     }
 }
