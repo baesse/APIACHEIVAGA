@@ -132,14 +132,16 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ControledeVagasController.cs" />
+    <Compile Include="Controllers\EstacionamentoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Banco\Conexao.cs" />
+    <Compile Include="Models\Estacionamento\Estacionamento.cs" />
     <Compile Include="Models\Usuario\Endereco.cs" />
     <Compile Include="Models\Usuario\Usuario.cs" />
-    <Compile Include="Models\Vaga.cs" />
+    <Compile Include="Models\Estacionamento\Vaga.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

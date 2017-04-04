@@ -6,8 +6,15 @@ using System.Web;
 
 namespace AcheiVaga.PI4.Models.Banco
 {
-    public class Conexao
+    public static class Conexao
     {
-      
+        public static MongoClient cliente = new MongoClient("mongodb://localhost:27017");
+        public static IMongoDatabase DataBase = cliente.GetDatabase("DBacheivaga");
+
+
+        
+
+
+       
     }
 }

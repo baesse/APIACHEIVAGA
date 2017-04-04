@@ -29,12 +29,21 @@ namespace AcheiVaga.PI4.Controllers
 
         }
 
+        /*
         [HttpGet]
         public List<Usuario> GetUsuarios()
         {
             Usuario usuario = new Usuario();
            return usuario.ListaCadastro();
 
+        }
+        */
+
+        [HttpGet]
+        public string GetLogin(string placa, string senha)
+        {
+            Usuario usuario = new Usuario();
+           return usuario.GetLogin(placa,senha);
         }
     }
 }

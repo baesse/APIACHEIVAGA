@@ -42,42 +42,36 @@ namespace AcheiVaga.PI4.Models
             string json = "";
             var Vagas = JsonConvert.DeserializeObject<List<Models.Vaga>>(json);
             Vagas = new List<Vaga>();
-           Models.Vaga vaga0 = new Vaga(1,true,0);
-           Vagas.Add(vaga0);
+            Vaga vaga0 = new Vaga(1,true,0);
+            Vagas.Add(vaga0);
             var Json_Serializado = JsonConvert.SerializeObject(Vagas);
             return Json_Serializado;
         }
 
         public bool CadastrodeVaga()
         {
-          
-                var Cliente = new MongoClient("mongodb://localhost:27017");
-                var database = Cliente.GetDatabase("DBacheivaga");
-                IMongoCollection<Vaga> vaganova = database.GetCollection<Vaga>("Vagas");
+                  
+              
+                IMongoCollection<Vaga> vaganova = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
                 Vaga vagacadastrar = new Vaga( 2,true, 5);
-               vaganova.InsertOne(vagacadastrar);
+                vaganova.InsertOne(vagacadastrar);
                 return true;
 
         }
 
         public string ListadeVagas()
-        {
-
-            var Cliente = new MongoClient("mongodb://localhost:27017");
-            var database = Cliente.GetDatabase("DBacheivaga");
+        {         
 
 
 
-            IMongoCollection<Vaga> vagas = database.GetCollection<Vaga>("Vagas");
-
+            IMongoCollection<Vaga> vagas = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
             var filtro = Builders<Vaga>.Filter.Empty;
             var pessoas = vagas.Find<Vaga>(filtro).ToList();
-
             string json = "";
             var Jsonvagas = JsonConvert.DeserializeObject<List<Models.Vaga>>(json);
             Jsonvagas = new List<Vaga>();
 
-            foreach(Models.Vaga vaga in pessoas)
+            foreach(Vaga vaga in pessoas)
             {
                 Jsonvagas.Add(vaga);
 
