@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Newtonsoft.Json;
-using System.IO;
 using MongoDB.Driver;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
 namespace AcheiVaga.PI4.Models
@@ -53,8 +50,7 @@ namespace AcheiVaga.PI4.Models
 
         public bool CadastrodeVaga()
         {
-            try
-            {
+          
                 var Cliente = new MongoClient("mongodb://localhost:27017");
                 var database = Cliente.GetDatabase("DBacheivaga");
                 IMongoCollection<Vaga> vaganova = database.GetCollection<Vaga>("Vagas");
@@ -62,11 +58,6 @@ namespace AcheiVaga.PI4.Models
                vaganova.InsertOne(vagacadastrar);
                 return true;
 
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         public string ListadeVagas()

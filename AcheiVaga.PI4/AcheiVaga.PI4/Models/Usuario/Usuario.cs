@@ -15,6 +15,7 @@ namespace AcheiVaga.PI4.Models.Usuario
         public string Senha { get; set; }
         public string PlacaCarro { get; set; }
         public string pontuacao { get; set; }
+        public Endereco Endereco { get; set; }
 
         public Usuario(string NomeUsuario, string Senha, string PlacaCarro, string pontuacao)
         {
@@ -22,6 +23,7 @@ namespace AcheiVaga.PI4.Models.Usuario
             this.Senha = Senha;
             this.PlacaCarro = PlacaCarro;
             this.pontuacao = pontuacao;
+            Endereco = new Endereco();
         }
 
         public Usuario()
@@ -40,7 +42,7 @@ namespace AcheiVaga.PI4.Models.Usuario
 
         }
 
-        public string ListaCadastro()
+        public List<Usuario> ListaCadastro()
         {
             string json = "";
 
@@ -51,19 +53,14 @@ namespace AcheiVaga.PI4.Models.Usuario
             var listausuario = ColecaoUsuario.Find<Usuario>(filtro).ToList();
             var Jsonusuario = JsonConvert.DeserializeObject<List<Usuario>>(json);
             Jsonusuario = new List<Usuario>();
-
             foreach(Usuario usuario in listausuario)
             {
                 Usuario usu = new Usuario(usuario.NomeUsuario, usuario.Senha, usuario.PlacaCarro, usuario.pontuacao);
-
-
-
                 Jsonusuario.Add(usu);
             }
 
-            var jsonserializado = JsonConvert.SerializeObject(Jsonusuario);
-
-            return jsonserializado;
+           // var jsonserializado = JsonConvert.SerializeObject(Jsonusuario);
+            return Jsonusuario;
         }
     }
 }
