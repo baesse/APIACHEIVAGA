@@ -22,6 +22,7 @@ namespace AcheiVaga.PI4.Controllers
             usuario.Endereco.cep = cep;
             usuario.Endereco.bairro = bairro;
             usuario.Endereco.complemento = complemento;
+            usuario.cudasuamae = "cu mesmo da sua mae";
 
 
             usuario.InserirUsuario(usuario);

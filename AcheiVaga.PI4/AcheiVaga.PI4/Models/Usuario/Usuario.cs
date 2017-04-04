@@ -16,6 +16,7 @@ namespace AcheiVaga.PI4.Models.Usuario
         public string PlacaCarro { get; set; }
         public string pontuacao { get; set; }
         public Endereco Endereco { get; set; }
+        public string cudasuamae { get; set; }
 
         public Usuario(string NomeUsuario, string Senha, string PlacaCarro, string pontuacao)
         {
