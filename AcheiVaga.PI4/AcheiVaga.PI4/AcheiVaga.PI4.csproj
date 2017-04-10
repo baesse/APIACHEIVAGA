@@ -139,7 +139,6 @@
     </Compile>
     <Compile Include="Models\Banco\Conexao.cs" />
     <Compile Include="Models\Estacionamento\Estacionamento.cs" />
-    <Compile Include="Models\Usuario\Endereco.cs" />
     <Compile Include="Models\Usuario\Usuario.cs" />
     <Compile Include="Models\Estacionamento\Vaga.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

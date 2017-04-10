@@ -12,14 +12,14 @@ namespace AcheiVaga.PI4.Models
     {
         public ObjectId _Id { get; set; }
         public string NomeEstacionamento { get; set; }
-        public Endereco Endereco { get; set; }
+        
         public List<Vaga> Vagas { get; set; }
 
 
         public Estacionamento(string Nome)
         {
             this.NomeEstacionamento = Nome;
-            this.Endereco = new Endereco();
+           
             this.Vagas = new List<Vaga>();
             
         }

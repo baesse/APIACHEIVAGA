@@ -7,29 +7,35 @@ using MongoDB.Bson;
 
 namespace AcheiVaga.PI4.Models
 {
-    public  class Vaga
+    public class Vaga
     {
 
-        public ObjectId _id { get; set; }  
-        public int codigovaga { get; set;}                  
+        public ObjectId _id { get; set; }
+        public int Codigovaga { get; set; }
         public bool VerOcupacao { get; set; }
-        public int IdEstacionamento { get; set; }
+        public int AndarVaga { get; set; }
+        public string TipoVaga { get; set; }
+        public int CodigoSensor { get; set; }
 
-        public static   List<Vaga> VagasOcupadas = new List<Vaga>();
+
+        public static List<Vaga> VagasOcupadas = new List<Vaga>();
 
 
-        public Vaga(int codigovaga,Boolean Verop, int Idestaciona){
+        public Vaga(int codigovaga, Boolean Verop, int AndarVaga, string TipoVaga, int CodigoSensor)
+        {
 
             this.VerOcupacao = Verop;
-            this.IdEstacionamento = Idestaciona;
-            this.codigovaga = codigovaga;
+            this.TipoVaga = TipoVaga;
+            this.Codigovaga = codigovaga;
+            this.CodigoSensor = CodigoSensor;
+            this.AndarVaga = AndarVaga;
 
 
-            }
+        }
 
         public Vaga()
         {
-            
+
 
 
 
@@ -39,48 +45,129 @@ namespace AcheiVaga.PI4.Models
 
         public string RetornoVagasJson()
         {
-            string json = "";
-            var Vagas = JsonConvert.DeserializeObject<List<Models.Vaga>>(json);
-            Vagas = new List<Vaga>();
-            Vaga vaga0 = new Vaga(1,true,0);
-            Vagas.Add(vaga0);
-            var Json_Serializado = JsonConvert.SerializeObject(Vagas);
-            return Json_Serializado;
+
+            List<Vaga> VAGAS = new List<Vaga>();
+            IMongoCollection<Vaga> Vagas = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+            var filtro = Builders<Vaga>.Filter.Empty;
+            var VagasLista = Vagas.Find<Vaga>(filtro).ToList();
+            return ConvertListForJson(VagasLista);
+
+
+
         }
 
-        public bool CadastrodeVaga()
+
+        public string RetornoVagaJsonByid(int id)
         {
-                  
-              
+
+            List<Vaga> VAGAS = new List<Vaga>();
+            IMongoCollection<Vaga> Vagas = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+            var filtro = Builders<Vaga>.Filter.Where(p => p.Codigovaga == id);
+            var VagasLista = Vagas.Find<Vaga>(filtro).ToList();
+            return ConvertListForJson(VagasLista);
+
+
+        }
+
+
+        public string RetornoVagaJsonByOcupadas()
+        {
+            List<Vaga> VAGAS = new List<Vaga>();
+            IMongoCollection<Vaga> Vagas = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+            var filtro = Builders<Vaga>.Filter.Where(p => p.VerOcupacao == true);
+            var VagasLista = Vagas.Find<Vaga>(filtro).ToList();
+            return ConvertListForJson(VagasLista);
+
+
+        }
+
+
+        public string RetornoVagaJsonByDesocupadas()
+        {
+
+
+            IMongoCollection<Vaga> Vagas = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+            var filtro = Builders<Vaga>.Filter.Where(p => p.VerOcupacao == false);
+            var VagasLista = Vagas.Find<Vaga>(filtro).ToList();
+            return ConvertListForJson(VagasLista);
+
+
+        }
+
+
+
+
+
+        public bool CadastrodeVaga(int QuantidadeDeVagasExistentes, int Andar)
+        {
+            try
+            {
+
                 IMongoCollection<Vaga> vaganova = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
-                Vaga vagacadastrar = new Vaga( 2,true, 5);
-                vaganova.InsertOne(vagacadastrar);
+                for (int i = 0; i < QuantidadeDeVagasExistentes; i++)
+                {
+
+                    Vaga Vaga = new Vaga(i + 1, false, Andar, "Descoberta", i + 1);
+
+
+                    vaganova.InsertOne(Vaga);
+                }
                 return true;
 
+            }
+            catch (MongoClientException e)
+            {
+                e.ToString();
+                return false;
+            }
+
         }
 
-        public string ListadeVagas()
-        {         
+
+        public void SetVagaCobertaIntervalo(int IntervaloIni, int IntervaloFinal)
+        {
+            IMongoCollection<Vaga> VagasSet = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+            var Filtro = Builders<Vaga>.Filter.Where(p => p.Codigovaga >= IntervaloIni && p.Codigovaga <= IntervaloFinal);
+            var update = Builders<Vaga>.Update.Set("TipoVaga", "Coberta");
+            VagasSet.UpdateMany(Filtro, update);
+
+        }
+
+        public void SetVagaCobertaIntervaloPorID(int idvaga)
+        {
+            IMongoCollection<Vaga> VagasSet = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+            var Filtro = Builders<Vaga>.Filter.Where(p => p.Codigovaga == idvaga);
+            var update = Builders<Vaga>.Update.Set("Descoberta", "Coberta");
+            VagasSet.UpdateMany(Filtro, update);
+
+        }
+
+        public void SetVagaOcupada(int idvaga)
+        {
+            IMongoCollection<Vaga> VagasSet = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+            var Filtro = Builders<Vaga>.Filter.Where(p => p.Codigovaga == idvaga);
+            var update = Builders<Vaga>.Update.Set("VerOcupacao", "true");
+            VagasSet.UpdateMany(Filtro, update);
+
+        }
 
 
+        public string ConvertListForJson(List<Vaga> list)
+        {
+            List<Vaga> VAGAS = new List<Vaga>();
 
-            IMongoCollection<Vaga> vagas = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
-            var filtro = Builders<Vaga>.Filter.Empty;
-            var pessoas = vagas.Find<Vaga>(filtro).ToList();
-            string json = "";
-            var Jsonvagas = JsonConvert.DeserializeObject<List<Models.Vaga>>(json);
-            Jsonvagas = new List<Vaga>();
-
-            foreach(Vaga vaga in pessoas)
+            foreach (Vaga vaga in list)
             {
-                Jsonvagas.Add(vaga);
+                VAGAS.Add(vaga);
 
             }
 
-            var Json_Serializado = JsonConvert.SerializeObject(Jsonvagas);
-            return Json_Serializado;
+            var JsonSerializado = JsonConvert.SerializeObject(VAGAS);
+            return JsonSerializado;
 
         }
+
+
 
 
     }
