@@ -20,14 +20,13 @@ namespace AcheiVaga.PI4.Controllers
 
             try
             {
-                var JsonPessoa = JsonConvert.DeserializeObject<Usuario>(usuario);
-                JsonPessoa.InserirUsuario(JsonPessoa);
-                return "Usuario Cadastrado";
+               var JsonPessoa = JsonConvert.DeserializeObject<Usuario>(usuario);
+               return JsonPessoa.InserirUsuario(JsonPessoa);
+                
 
             }
             catch (MongoException e)
             {
-
                 return e.ToString();
 
             }
@@ -40,15 +39,17 @@ namespace AcheiVaga.PI4.Controllers
 
         }
 
-        /*
+        
         [HttpGet]
-        public List<Usuario> GetUsuarios()
+        public string GetUsuarios(string email,string senha)
         {
             Usuario usuario = new Usuario();
-           return usuario.ListaCadastro();
+            return usuario.LogarUsuario(email, senha);
 
         }
-        */
+
+
+        
 
         //[HttpGet]
         //public string GetLogin(string placa, string senha)

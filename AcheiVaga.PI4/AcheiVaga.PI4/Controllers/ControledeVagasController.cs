@@ -27,7 +27,7 @@ namespace AcheiVaga.PI4.Controllers
         public string PostNovaVaga()
         {
             Models.Vaga vaga = new Models.Vaga();
-            vaga.CadastrodeVaga(5,0);
+            vaga.CadastrodeVaga(5,0,0);
             return "Vaga cadastrada";
         }
 

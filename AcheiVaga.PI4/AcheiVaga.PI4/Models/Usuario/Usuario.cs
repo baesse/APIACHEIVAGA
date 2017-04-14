@@ -18,6 +18,7 @@ namespace AcheiVaga.PI4.Models.Usuario
         public string Email { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+       
 
 
 
@@ -30,6 +31,8 @@ namespace AcheiVaga.PI4.Models.Usuario
             this.Email = email;
             this.Latitude = "";
             this.Longitude = "";
+          
+
 
       
         }
@@ -41,10 +44,61 @@ namespace AcheiVaga.PI4.Models.Usuario
 
 
 
-        public void InserirUsuario(Usuario usuario)
-        {           
-            IMongoCollection<Usuario> ColecaoUsuario = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
-            ColecaoUsuario.InsertOne(usuario);
+        public string InserirUsuario(Usuario usuario)
+        {
+
+            if (VerificaDuplicidade(usuario.Email))
+            {
+                IMongoCollection<Usuario> ColecaoUsuario = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
+                ColecaoUsuario.InsertOne(usuario);
+                return "Cadastro efetuado";
+            }
+            else
+            {
+                return "Usuario já cadastrado";
+
+            }
+        }
+
+
+
+
+        public string LogarUsuario(string email, string senha)
+        {
+            Usuario user = new Usuario();
+            List<Usuario> usu = new List<Usuario>();
+
+            if (email!=null && senha!=null)
+            {
+                List<Usuario> usuario = new List<Usuario>();
+                IMongoCollection<Usuario> lista = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
+                var filtro = Builders<Usuario>.Filter.Where(p => p.Email == email && p.Senha==senha);
+                var Usuario = lista.Find<Usuario>(filtro).ToList();   
+                
+                foreach(Usuario usuf in Usuario)
+                {
+                    
+                    usu.Add(usuf);
+
+                }                
+                  
+                if(usu.Count==1)      
+                return ConvertListForJson(Usuario).ToString();
+                else
+                {
+                    return "Usuario não encontrado";
+
+                }
+
+            }
+            else
+            {
+                return "Email ou senha invalidos";
+            }
+
+
+
+
         }
 
 
@@ -52,65 +106,31 @@ namespace AcheiVaga.PI4.Models.Usuario
 
 
 
+        public string ConvertListForJson(List<Usuario> list)
+        {
+            List<Usuario> ListUsuario = new List<Usuario>();
+
+            foreach (Usuario usuario in list)
+            {
+                ListUsuario.Add(usuario);
+
+            }
+
+            var JsonSerializado = JsonConvert.SerializeObject(ListUsuario);
+            return JsonSerializado;
+
+        }
+
+        public bool VerificaDuplicidade(string email)
+        {
+            List<Usuario> Usuario = new List<Models.Usuario.Usuario>();
+            IMongoCollection<Usuario> Colecaousuario = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
+            var filtro = Builders<Usuario>.Filter.Where(p => p.Email == email);
+            var usuario = Colecaousuario.Find(filtro).Count();
+            if(usuario >0) { return false; } else { return true; }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //public string ListaCadastro()
-        //{
-        //    string json = "";
-        //    IMongoCollection<Usuario> ColecaoUsuario = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
-        //    var filtro = Builders<Usuario>.Filter.Empty;
-        //    var listausuario = ColecaoUsuario.Find<Usuario>(filtro).ToList();
-        //    var Jsonusuario = JsonConvert.DeserializeObject<List<Usuario>>(json);
-        //    Jsonusuario = new List<Usuario>();
-        //    foreach (Usuario usuario in listausuario)
-        //    {
-        //        Usuario usu = new Usuario(usuario.NomeUsuario, usuario.Senha, usuario.PlacaCarro, usuario.pontuacao,"");
-        //        Jsonusuario.Add(usu);
-        //    }
-        //    var jsonserializado = JsonConvert.SerializeObject(Jsonusuario);
-        //    return jsonserializado;
-
-
-
-        //}
-
-
-        //public string GetLogin(string placa,string senha)
-        //{
-        //    Usuario retorno = new Usuario();          
-        //    var filtro = Builders<Usuario>.Filter.Where(p => p.PlacaCarro==placa);
-        //    IMongoCollection<Usuario> colecao = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
-        //    var query = from e in colecao.AsQueryable<Usuario>() where e.NomeUsuario == "Igor" select e;
-        //    foreach(Usuario us in query)
-        //    {
-        //        if(us.PlacaCarro.Equals(placa) &&  us.Senha.Equals(senha))
-
-        //        retorno.NomeUsuario = us.NomeUsuario;
-        //        retorno.PlacaCarro = us.PlacaCarro;
-        //        retorno.pontuacao = us.pontuacao;
-
-
-        //    }
-        //    return retorno.ToJson();
-
-
-
-        //}
+        }
+        
     }
 }
