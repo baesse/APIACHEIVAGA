@@ -48,14 +48,72 @@ namespace AcheiVaga.PI4.Controllers
 
         }
 
+        [HttpPut]
+        public string UpdateNome(string email, string senha, string novonome)
+        {
+            try
+            {
 
-        
 
-        //[HttpGet]
-        //public string GetLogin(string placa, string senha)
-        //{
-        //    Usuario usuario = new Usuario();
-        //   return usuario.GetLogin(placa,senha);
-        //}
+                Usuario.AlterarNome(email, senha, novonome);
+
+                return "Nome alterado";
+
+            }
+            catch (MongoException e)
+            {
+                return e.ToString();
+
+            }
+
+        }
+
+        [HttpPut]
+        public string UpdateEmail(string email, string senha, string novoemail)
+        {
+            try
+            {
+
+
+                Usuario.AlterarEmail(email, senha, novoemail);
+
+                return "Nome alterado";
+
+            }
+            catch (MongoException e)
+            {
+                return e.ToString();
+
+            }
+
+        }
+
+        [HttpPut]
+        public string Updatesenha(string email, string senha, string novoemail)
+        {
+            try
+            {
+
+
+                if(Usuario.AlterarEmail(email, senha, novoemail))
+                {
+                    return "Senha alterada";
+
+                }else
+                {
+                    return "Nome alterado";
+                }
+
+              
+
+            }
+            catch (MongoException e)
+            {
+                return e.ToString();
+
+            }
+
+        }
+
     }
 }
