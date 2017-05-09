@@ -24,11 +24,6 @@ namespace AcheiVaga.PI4.Controllers
             Estacionamento.CadastrarEstacionamento();
 
         }
-        [HttpGet]
-        public string retornar()
-        {
-            string "teste";
-
-        }
+      
     }
 }
