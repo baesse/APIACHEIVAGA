@@ -17,11 +17,12 @@ namespace AcheiVaga.PI4.Models
         public string TipoVaga { get; set; }
         public int CodigoSensor { get; set; }
         public int Preferencia { get; set; }
+        public string Endereco { get; set; }
 
         public static List<Vaga> VagasOcupadas = new List<Vaga>();
 
 
-        public Vaga(int codigovaga, Boolean Verop, int AndarVaga, string TipoVaga, int CodigoSensor, int preferencia)
+        public Vaga(int codigovaga, Boolean Verop, int AndarVaga, string TipoVaga, int CodigoSensor, int preferencia, string Endereco)
         {
 
             this.VerOcupacao = Verop;
@@ -30,6 +31,8 @@ namespace AcheiVaga.PI4.Models
             this.CodigoSensor = CodigoSensor;
             this.AndarVaga = AndarVaga;
             this.Preferencia = preferencia;
+            this.Endereco = Endereco;
+
 
         }
 
@@ -70,7 +73,7 @@ namespace AcheiVaga.PI4.Models
         }
 
 
-        public string RetornoVagaJsonByOcupadas()
+        public  string RetornoVagaJsonByOcupadas()
         {
             try
             {
@@ -105,6 +108,26 @@ namespace AcheiVaga.PI4.Models
         }
 
 
+        public static List<Vaga> RetornoListaVagaDesocupadas()
+        {
+            try
+            {
+
+                IMongoCollection<Vaga> Vagas = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+                var filtro = Builders<Vaga>.Filter.Where(p => p.VerOcupacao == false);
+                var VagasLista = Vagas.Find<Vaga>(filtro).ToList();
+                return VagasLista;
+
+            }
+            catch (Exception e)
+            {
+                return null;
+
+            }
+
+        }
+
+
 
 
 
@@ -117,7 +140,7 @@ namespace AcheiVaga.PI4.Models
                 for (int i = 0; i < QuantidadeDeVagasExistentes; i++)
                 {
 
-                    Vaga Vaga = new Vaga(i + 1, false, Andar, "Descoberta", i + 1,preferencia);
+                    Vaga Vaga = new Vaga(i + 1, false, Andar, "Descoberta", i + 1,preferencia,"Rua da bahia 1020");
 
 
                     vaganova.InsertOne(Vaga);
@@ -173,7 +196,7 @@ namespace AcheiVaga.PI4.Models
         }
 
 
-        public string ConvertListForJson(List<Vaga> list)
+        public static string ConvertListForJson(List<Vaga> list)
         {
             try
             {

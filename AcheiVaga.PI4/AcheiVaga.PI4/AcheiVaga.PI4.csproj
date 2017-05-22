@@ -176,6 +176,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CalculodeRotaController.cs" />
     <Compile Include="Controllers\ControledeVagasController.cs" />
     <Compile Include="Controllers\EstacionamentoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -184,6 +185,7 @@
     </Compile>
     <Compile Include="Models\Banco\Conexao.cs" />
     <Compile Include="Models\Estacionamento\Estacionamento.cs" />
+    <Compile Include="Models\Rotas\Rota.cs" />
     <Compile Include="Models\Usuario\Usuario.cs" />
     <Compile Include="Models\Estacionamento\Vaga.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -197,6 +199,8 @@
     <Content Include="apiapp.json" />
     <Content Include="Index.cshtml" />
     <None Include="Properties\PublishProfiles\API.pubxml" />
+    <None Include="Properties\PublishProfiles\APITRIVAGA - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\APITRIVAGA - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\APIVERSAO0.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -207,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\CalculodeRota\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

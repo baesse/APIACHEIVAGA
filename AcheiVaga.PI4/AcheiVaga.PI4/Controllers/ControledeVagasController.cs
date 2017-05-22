@@ -24,10 +24,10 @@ namespace AcheiVaga.PI4.Controllers
 
 
         [HttpPost]
-        public string PostNovaVaga()
+        public string PostNovaVaga(int quantidade)
         {
             Models.Vaga vaga = new Models.Vaga();
-            vaga.CadastrodeVaga(5, 0, 0);
+            vaga.CadastrodeVaga(quantidade, 0, 0);
             return "Vaga cadastrada";
         }
 
