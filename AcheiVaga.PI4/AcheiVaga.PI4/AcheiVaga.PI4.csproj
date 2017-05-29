@@ -179,12 +179,17 @@
     <Compile Include="Controllers\CalculodeRotaController.cs" />
     <Compile Include="Controllers\ControledeVagasController.cs" />
     <Compile Include="Controllers\EstacionamentoController.cs" />
+    <Compile Include="Controllers\CadastroShopingController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Banco\Conexao.cs" />
     <Compile Include="Models\Estacionamento\Estacionamento.cs" />
+    <Compile Include="Models\Estacionamento\Piso.cs" />
+    <Compile Include="Models\Mall\Loja.cs" />
+    <Compile Include="Models\Mall\LojaMapa.cs" />
+    <Compile Include="Models\Mall\Mall.cs" />
     <Compile Include="Models\Rotas\Rota.cs" />
     <Compile Include="Models\Usuario\Usuario.cs" />
     <Compile Include="Models\Estacionamento\Vaga.cs" />
@@ -212,6 +217,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\CalculodeRota\" />
+    <Folder Include="Views\Shooping\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

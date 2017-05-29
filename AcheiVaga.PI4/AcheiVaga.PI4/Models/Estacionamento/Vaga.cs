@@ -12,8 +12,7 @@ namespace AcheiVaga.PI4.Models
 
         public ObjectId _id { get; set; }
         public int Codigovaga { get; set; }
-        public bool VerOcupacao { get; set; }
-        public int AndarVaga { get; set; }
+        public bool VerOcupacao { get; set; }     
         public string TipoVaga { get; set; }
         public int CodigoSensor { get; set; }
         public int Preferencia { get; set; }
@@ -28,8 +27,7 @@ namespace AcheiVaga.PI4.Models
             this.VerOcupacao = Verop;
             this.TipoVaga = TipoVaga;
             this.Codigovaga = codigovaga;
-            this.CodigoSensor = CodigoSensor;
-            this.AndarVaga = AndarVaga;
+            this.CodigoSensor = CodigoSensor;          
             this.Preferencia = preferencia;
             this.Endereco = Endereco;
 
@@ -155,6 +153,34 @@ namespace AcheiVaga.PI4.Models
             }
 
         }
+
+        public List<Vaga> CadastrodeVagaretornalista(int QuantidadeDeVagasExistentes, int Andar, int preferencia)
+        {
+            try
+            {
+                List<Vaga> vagas = new List<Vaga>();
+
+                IMongoCollection<Vaga> vaganova = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
+                for (int i = 0; i < QuantidadeDeVagasExistentes; i++)
+                {
+
+                    Vaga Vaga = new Vaga(i + 1, false, Andar, "Descoberta", i + 1, preferencia, "Rua da bahia 1020");
+
+                    vagas.Add(Vaga);
+                    vaganova.InsertOne(Vaga);
+                }
+                return vagas;
+
+
+            }
+            catch (MongoClientException e)
+            {
+                e.ToString();
+                return null;
+            }
+
+        }
+
 
 
         public void SetVagaCobertaIntervalo(int IntervaloIni, int IntervaloFinal)
