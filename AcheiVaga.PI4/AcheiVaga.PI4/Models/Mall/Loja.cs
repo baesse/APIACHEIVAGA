@@ -15,13 +15,16 @@ namespace AcheiVaga.PI4.Models.Mall
 
         public Loja(String nome,int codigo)
         {
-            this.nomedaloja = nome;
-            LojaMapa rota = new LojaMapa();
+            this.nomedaloja = nome;           
             this.lojasdistancia = new List<LojaMapa>();
+            for (int i = 1; i < 6; i++)
+            {               
 
-            rota.codigoloja = codigo;
-            rota.DistanciaLoja = codigo * 10;
-            lojasdistancia.Add(rota);
+                this.lojasdistancia.Add(new LojaMapa(i, i * 10, i));
+               
+
+            }
+            
         }
 
        

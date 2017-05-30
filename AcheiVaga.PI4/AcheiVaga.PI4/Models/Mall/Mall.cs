@@ -21,16 +21,11 @@ namespace AcheiVaga.PI4.Models.Mall
         {
             this.EstacionamentoShooping = ESTACIONAMENTO;
             this.NomeShoping = "Minas Shoping";
-
             this.LOJAS = new List<Loja>();
-
             foreach(Loja lojanova in lojasnovas)
             {
                 this.LOJAS.Add(lojanova);
-            }
-
-
-          
+            }        
            
         }
 
@@ -39,6 +34,14 @@ namespace AcheiVaga.PI4.Models.Mall
         {
             IMongoCollection<Mall> Novoshoping = Banco.Conexao.DataBase.GetCollection<Mall>("Mall");
             Novoshoping.InsertOne(SHOP);
+        }
+
+
+
+
+        public String MelhorVaga(String nomeloja)
+        {
+
         }
     }
 }
