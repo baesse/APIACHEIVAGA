@@ -49,6 +49,13 @@ namespace AcheiVaga.PI4.Controllers
 
         }
 
+        [HttpGet]
+        public Vaga BuscarMelhorVaga(String nomeloja)
+        {
+            Mall mall = new Mall();
+            return mall.MelhorVaga(nomeloja);
+        }
+
 
 
 
