@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 
 namespace AcheiVaga.PI4.Models.Usuario
 {
-    public  class Usuario
+    public class Usuario
     {
         public ObjectId _id { get; set; }
         public string NomeUsuario { get; set; }
         public string Senha { get; set; }
         public string PlacaCarro { get; set; }
-        public string pontuacao { get; set; }
+        public int pontuacao { get; set; }
         public string Email { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
@@ -23,19 +23,13 @@ namespace AcheiVaga.PI4.Models.Usuario
 
 
 
-        public  Usuario(string NomeUsuario, string Senha, string PlacaCarro, string pontuacao, string email)
+        public Usuario(string NomeUsuario, string Senha, string PlacaCarro, string Email)
         {
             this.NomeUsuario = NomeUsuario;
             this.Senha = Senha;
             this.PlacaCarro = PlacaCarro;
-            this.pontuacao = pontuacao;
-            this.Email = email;
-            this.Latitude = "";
-            this.Longitude = "";
-
-
-
-
+            pontuacao = 0;
+            this.Email = Email;
         }
 
         public Usuario()
@@ -43,15 +37,16 @@ namespace AcheiVaga.PI4.Models.Usuario
 
         }
 
-
-
-        public string InserirUsuario(Usuario usuario)
+        public string InserirUsuario(String nome, String email, String senha, String placacarro)
         {
 
-            if (VerificaDuplicidade(usuario.Email))
+            if (VerificaDuplicidade(email))
             {
                 IMongoCollection<Usuario> ColecaoUsuario = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
-                ColecaoUsuario.InsertOne(usuario);
+
+                Usuario user = new Usuario(nome, senha, placacarro, email);
+
+                ColecaoUsuario.InsertOne(user);
                 return "Cadastro efetuado";
             }
             else
@@ -60,9 +55,6 @@ namespace AcheiVaga.PI4.Models.Usuario
 
             }
         }
-
-
-
 
         public string LogarUsuario(string email, string senha)
         {
@@ -133,13 +125,13 @@ namespace AcheiVaga.PI4.Models.Usuario
 
         }
 
-        public static bool AlterarEmail(string email,string senha,string novoemail)
+        public static bool AlterarEmail(string email, string senha, string novoemail)
         {
 
             IMongoCollection<Usuario> usuario = Banco.Conexao.DataBase.GetCollection<Usuario>("Cad_Usuario");
             var filtro = Builders<Usuario>.Filter.Where(p => p.Email == email && p.Senha == senha);
             var update = Builders<Usuario>.Update.Set("Email", novoemail);
-            var result = usuario.UpdateOne(filtro,update);
+            var result = usuario.UpdateOne(filtro, update);
             return true;
 
         }

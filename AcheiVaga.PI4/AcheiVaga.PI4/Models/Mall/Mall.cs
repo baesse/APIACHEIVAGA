@@ -15,15 +15,15 @@ namespace AcheiVaga.PI4.Models.Mall
     {
         public ObjectId _id { get; set; }
         public String NomeShoping { get; set; }
-        public Estacionamento.Estacionamento EstacionamentoShooping { get; set; }
+        public List<Piso> AndaresEstacionamento { get; set; }      
         public List<Loja> LOJAS { get; set; }
        
         
 
 
-        public Mall(Estacionamento.Estacionamento ESTACIONAMENTO,List<Loja>lojasnovas)
+        public Mall(List<Loja>lojasnovas,List<Piso> Andares)
         {
-            this.EstacionamentoShooping = ESTACIONAMENTO;
+            this.AndaresEstacionamento = Andares;
             this.NomeShoping = "Minas Shoping";
             this.LOJAS = new List<Loja>();
             foreach(Loja lojanova in lojasnovas)
@@ -67,7 +67,7 @@ namespace AcheiVaga.PI4.Models.Mall
 
                 }
 
-                foreach(Piso Andar in SHOP.EstacionamentoShooping.Andares)
+                foreach(Piso Andar in SHOP.AndaresEstacionamento)
                 {
 
                     listAndares.Add(Andar);
@@ -107,23 +107,57 @@ namespace AcheiVaga.PI4.Models.Mall
             }
 
 
-            int i = 10;
+           
 
 
 
             foreach (Vaga melhorvaga in listvagas)
             {
-                if (melhorvaga.Codigovaga < i && melhorvaga.VerOcupacao == false)
+                if (melhorvaga.VerOcupacao == false)
                 {
                     return melhorvaga;
 
-                }else
-                {
-                    i++;
                 }
                
             }
             return null;
+        }
+
+        public String OcuparVaga(int iddavaga,int codigopiso)
+        {
+            IMongoCollection<Mall> MALL = Banco.Conexao.DataBase.GetCollection<Mall>("Mall");
+            var filtro = Builders<Mall>.Filter.Empty;
+            var mall = MALL.Find(filtro).ToList();
+            var filtrodelete=Builders<Mall>.Filter.Where(p=>p.NomeShoping=="Minas Shoping");
+            foreach (Mall SHOOP in mall)
+            {
+                foreach(Piso piso  in SHOOP.AndaresEstacionamento)
+                {
+                    if (piso.Codigodopiso == codigopiso)
+                    {
+                        foreach (Vaga vaga in piso.vagasdopiso)
+                        {
+                            if (vaga.Codigovaga == iddavaga)
+                            {
+                                vaga.VerOcupacao = true;
+                              
+                                MALL.DeleteOne(filtro);
+                                MALL.InsertOne(SHOOP);
+                                return "Vaga atualizada no piso " + piso.Codigodopiso + " com codigo de vaga numero " + iddavaga;
+                            }
+                        }
+                    }
+
+                }
+                       
+                
+            }
+
+            return "Vaga não atualizada";
+
+
+
+
         }
                 
 

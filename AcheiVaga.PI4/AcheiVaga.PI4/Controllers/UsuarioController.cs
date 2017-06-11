@@ -13,35 +13,15 @@ namespace AcheiVaga.PI4.Controllers
 {
     public class UsuarioController : ApiController
     {
-       [HttpPost]
-        public string PostNovoUsuario(string usuario)
+        [HttpPost]
+        public string PostNovoUsuario(String nome, String email, String senha, String placacarro)
         {
-
-
-            try
-            {
-               var JsonPessoa = JsonConvert.DeserializeObject<Usuario>(usuario);
-               return JsonPessoa.InserirUsuario(JsonPessoa);
-                
-
-            }
-            catch (MongoException e)
-            {
-                return e.ToString();
-
-            }
-
-                   
-
-
-          
-
-
+            Usuario user = new Usuario();
+            return user.InserirUsuario(nome, email, senha, placacarro);
         }
 
-        
         [HttpGet]
-        public string GetUsuarios(string email,string senha)
+        public string GetUsuarios(string email, string senha)
         {
             Usuario usuario = new Usuario();
             return usuario.LogarUsuario(email, senha);
@@ -89,22 +69,23 @@ namespace AcheiVaga.PI4.Controllers
         }
 
         [HttpPut]
-        public string Updatesenha(string email, string senha, string novoemail)
+        public string Updatesenha(string email, string senha, string novoemail1)
         {
             try
             {
 
 
-                if(Usuario.AlterarEmail(email, senha, novoemail))
+                if (Usuario.AlterarEmail(email, senha, novoemail1))
                 {
                     return "Senha alterada";
 
-                }else
+                }
+                else
                 {
                     return "Nome alterado";
                 }
 
-              
+
 
             }
             catch (MongoException e)
