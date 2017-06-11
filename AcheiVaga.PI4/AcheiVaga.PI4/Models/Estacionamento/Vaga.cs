@@ -12,16 +12,18 @@ namespace AcheiVaga.PI4.Models
 
         public ObjectId _id { get; set; }
         public int Codigovaga { get; set; }
+        public int andardavaga { get; set; }
+        public bool melhorvaga { get; set; }
         public bool VerOcupacao { get; set; }     
         public string TipoVaga { get; set; }
         public int CodigoSensor { get; set; }
         public int Preferencia { get; set; }
-        public string Endereco { get; set; }
+      
 
         public static List<Vaga> VagasOcupadas = new List<Vaga>();
 
 
-        public Vaga(int codigovaga, Boolean Verop, int AndarVaga, string TipoVaga, int CodigoSensor, int preferencia, string Endereco)
+        public Vaga(int codigovaga, Boolean Verop,  string TipoVaga, int CodigoSensor, int preferencia, bool melhorvaga,int codigoandar)
         {
 
             this.VerOcupacao = Verop;
@@ -29,7 +31,10 @@ namespace AcheiVaga.PI4.Models
             this.Codigovaga = codigovaga;
             this.CodigoSensor = CodigoSensor;          
             this.Preferencia = preferencia;
-            this.Endereco = Endereco;
+            this.melhorvaga = false;
+            this.andardavaga = codigoandar;
+
+           
 
 
         }
@@ -129,42 +134,19 @@ namespace AcheiVaga.PI4.Models
 
 
 
-        public bool CadastrodeVaga(int QuantidadeDeVagasExistentes, int Andar,int preferencia)
-        {
-            try
-            {
-
-                IMongoCollection<Vaga> vaganova = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
-                for (int i = 0; i < QuantidadeDeVagasExistentes; i++)
-                {
-
-                    Vaga Vaga = new Vaga(i + 1, false, Andar, "Descoberta", i + 1,preferencia,"Rua da bahia 1020");
-
-
-                    vaganova.InsertOne(Vaga);
-                }
-                return true;
-
-            }
-            catch (MongoClientException e)
-            {
-                e.ToString();
-                return false;
-            }
-
-        }
+        
 
         public List<Vaga> CadastrodeVagaretornalista(int QuantidadeDeVagasExistentes, int Andar, int preferencia)
         {
             try
             {
                 List<Vaga> vagas = new List<Vaga>();
-
+                
                 IMongoCollection<Vaga> vaganova = Banco.Conexao.DataBase.GetCollection<Vaga>("Vagas");
                 for (int i = 0; i < QuantidadeDeVagasExistentes; i++)
                 {
 
-                    Vaga Vaga = new Vaga(i + 1, false, Andar, "Descoberta", i + 1, preferencia, "Rua da bahia 1020");
+                    Vaga Vaga = new Vaga(i + 1, false,"Descoberta", i + 1, preferencia,false,Andar );
 
                     vagas.Add(Vaga);
                     vaganova.InsertOne(Vaga);

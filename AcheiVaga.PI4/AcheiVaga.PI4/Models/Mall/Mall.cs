@@ -15,22 +15,22 @@ namespace AcheiVaga.PI4.Models.Mall
     {
         public ObjectId _id { get; set; }
         public String NomeShoping { get; set; }
-        public List<Piso> AndaresEstacionamento { get; set; }      
+        public List<Piso> AndaresEstacionamento { get; set; }
         public List<Loja> LOJAS { get; set; }
-       
-        
 
 
-        public Mall(List<Loja>lojasnovas,List<Piso> Andares)
+
+
+        public Mall(List<Loja> lojasnovas, List<Piso> Andares)
         {
             this.AndaresEstacionamento = Andares;
             this.NomeShoping = "Minas Shoping";
             this.LOJAS = new List<Loja>();
-            foreach(Loja lojanova in lojasnovas)
+            foreach (Loja lojanova in lojasnovas)
             {
                 this.LOJAS.Add(lojanova);
-            }        
-           
+            }
+
         }
 
         public Mall()
@@ -59,15 +59,15 @@ namespace AcheiVaga.PI4.Models.Mall
 
             foreach (Mall SHOP in MALL)
             {
-                foreach(Loja loja in SHOP.LOJAS)
+                foreach (Loja loja in SHOP.LOJAS)
                 {
-                    if(loja.nomedaloja.Equals(nomeloja))
-                    listlojas.Add(loja);
+                    if (loja.nomedaloja.Equals(nomeloja))
+                        listlojas.Add(loja);
 
 
                 }
 
-                foreach(Piso Andar in SHOP.AndaresEstacionamento)
+                foreach (Piso Andar in SHOP.AndaresEstacionamento)
                 {
 
                     listAndares.Add(Andar);
@@ -75,7 +75,7 @@ namespace AcheiVaga.PI4.Models.Mall
 
 
                 }
-                
+
             }
 
 
@@ -94,20 +94,21 @@ namespace AcheiVaga.PI4.Models.Mall
             {
                 foreach (Loja loja in Lojas)
                 {
-                        if (loja.Codigodopiso == Andares.Codigodopiso)
+                    if (loja.Codigodopiso == Andares.Codigodopiso)
+                    {
+                        foreach (Vaga vagas in Andares.vagasdopiso)
                         {
-                            foreach (Vaga vagas in Andares.vagasdopiso)
-                            {
-                                listvagas.Add(vagas);
+                         
+                            listvagas.Add(vagas);
 
-                            }
+                        }
                     }
-              }
+                }
 
             }
 
 
-           
+
 
 
 
@@ -115,23 +116,24 @@ namespace AcheiVaga.PI4.Models.Mall
             {
                 if (melhorvaga.VerOcupacao == false)
                 {
+                    melhorvaga.melhorvaga = true;
                     return melhorvaga;
 
                 }
-               
+
             }
             return null;
         }
 
-        public String OcuparVaga(int iddavaga,int codigopiso)
+        public String OcuparVaga(int iddavaga, int codigopiso)
         {
             IMongoCollection<Mall> MALL = Banco.Conexao.DataBase.GetCollection<Mall>("Mall");
             var filtro = Builders<Mall>.Filter.Empty;
             var mall = MALL.Find(filtro).ToList();
-            var filtrodelete=Builders<Mall>.Filter.Where(p=>p.NomeShoping=="Minas Shoping");
+            var filtrodelete = Builders<Mall>.Filter.Where(p => p.NomeShoping == "Minas Shoping");
             foreach (Mall SHOOP in mall)
             {
-                foreach(Piso piso  in SHOOP.AndaresEstacionamento)
+                foreach (Piso piso in SHOOP.AndaresEstacionamento)
                 {
                     if (piso.Codigodopiso == codigopiso)
                     {
@@ -140,7 +142,7 @@ namespace AcheiVaga.PI4.Models.Mall
                             if (vaga.Codigovaga == iddavaga)
                             {
                                 vaga.VerOcupacao = true;
-                              
+
                                 MALL.DeleteOne(filtro);
                                 MALL.InsertOne(SHOOP);
                                 return "Vaga atualizada no piso " + piso.Codigodopiso + " com codigo de vaga numero " + iddavaga;
@@ -149,8 +151,8 @@ namespace AcheiVaga.PI4.Models.Mall
                     }
 
                 }
-                       
-                
+
+
             }
 
             return "Vaga não atualizada";
@@ -159,38 +161,66 @@ namespace AcheiVaga.PI4.Models.Mall
 
 
         }
-                
+
+        public string GetTodasAsVagas()
+        {
+            IMongoCollection<Mall> MALL = Banco.Conexao.DataBase.GetCollection<Mall>("Mall");
+            var filtro = Builders<Mall>.Filter.Empty;
+            var mall = MALL.Find(filtro).ToList();
+            List<Vaga> vagas = new List<Vaga>();
 
 
+            foreach (Mall shopp in mall)
+            {
+                foreach (Piso andares in shopp.AndaresEstacionamento)
+                {
+                    foreach (Vaga vaga in andares.vagasdopiso)
+                    {
+                        vagas.Add(vaga);
 
 
+                    }
+                }
+            }
+            return ConvertListForJson(vagas);
 
 
-        
-
-
-
-        //public static string ConvertListForJson(List<Mall> list)
-        //{
-        //    try
-        //    {
-        //        List<Mall> MALL = new List<Mall>();
-
-        //        foreach (Mall vaga in list)
-        //        {
-        //            MALL.Add(vaga);
-
-        //        }
-
-        //        //var JsonSerializado = JsonConvert.(MALL);
-        //        return JsonSerializado;
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        e.ToString();
-        //        return "";
-
-        //    }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        public static string ConvertListForJson(List<Vaga> list)
+        {
+            try
+            {
+                List<Vaga> VAGAS = new List<Vaga>();
+
+                foreach (Vaga vaga in list)
+                {
+                    VAGAS.Add(vaga);
+
+                }
+
+                var JsonSerializado = Newtonsoft.Json.JsonConvert.SerializeObject(VAGAS);
+                return JsonSerializado;
+
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+                return "";
+
+            }
+        }
+
     }
+}
