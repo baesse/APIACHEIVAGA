@@ -187,6 +187,42 @@ namespace AcheiVaga.PI4.Models.Mall
 
         }
 
+        public string GetTodasAsVagasPorAndar(int codigoandar)
+        {
+            IMongoCollection<Mall> MALL = Banco.Conexao.DataBase.GetCollection<Mall>("Mall");
+            var filtro = Builders<Mall>.Filter.Empty;
+            var mall = MALL.Find(filtro).ToList();
+            List<Piso> Andares = new List<Piso>();
+            List<Vaga> Vagasdopiso = new List<Vaga>();
+
+
+            foreach (Mall shopp in mall)
+            {
+                foreach (Piso andares in shopp.AndaresEstacionamento)
+                {
+                    if (andares.Codigodopiso == codigoandar)
+                    {
+                        Andares.Add(andares);
+                        break;
+
+                    }
+                }
+            }
+
+
+            foreach(Piso andar in Andares)
+            {
+               foreach(Vaga vagas in andar.vagasdopiso)
+                {
+                    Vagasdopiso.Add(vagas);
+
+                }
+            }
+            return ConvertListForJson(Vagasdopiso);
+
+
+        }
+
 
 
 
