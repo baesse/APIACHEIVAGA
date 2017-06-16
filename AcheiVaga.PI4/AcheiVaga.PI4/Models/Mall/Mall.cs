@@ -98,8 +98,11 @@ namespace AcheiVaga.PI4.Models.Mall
                     {
                         foreach (Vaga vagas in Andares.vagasdopiso)
                         {
-                         
-                            listvagas.Add(vagas);
+                            if (vagas.VerOcupacao == false)
+                            {
+
+                                listvagas.Add(vagas);
+                            }
 
                         }
                     }
