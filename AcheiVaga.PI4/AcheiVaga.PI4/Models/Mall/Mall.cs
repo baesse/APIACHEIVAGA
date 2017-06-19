@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 using AcheiVaga.PI4.Models;
-
+teste
 namespace AcheiVaga.PI4.Models.Mall
 {
     public class Mall
