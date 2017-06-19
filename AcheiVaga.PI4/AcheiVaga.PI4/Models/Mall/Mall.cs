@@ -165,6 +165,45 @@ namespace AcheiVaga.PI4.Models.Mall
 
         }
 
+
+
+        public String Desocupar(int iddavaga, int codigopiso)
+        {
+            IMongoCollection<Mall> MALL = Banco.Conexao.DataBase.GetCollection<Mall>("Mall");
+            var filtro = Builders<Mall>.Filter.Empty;
+            var mall = MALL.Find(filtro).ToList();
+            var filtrodelete = Builders<Mall>.Filter.Where(p => p.NomeShoping == "Minas Shoping");
+            foreach (Mall SHOOP in mall)
+            {
+                foreach (Piso piso in SHOOP.AndaresEstacionamento)
+                {
+                    if (piso.Codigodopiso == codigopiso)
+                    {
+                        foreach (Vaga vaga in piso.vagasdopiso)
+                        {
+                            if (vaga.Codigovaga == iddavaga)
+                            {
+                                vaga.VerOcupacao = false;
+
+                                MALL.DeleteOne(filtro);
+                                MALL.InsertOne(SHOOP);
+                                return "Vaga atualizada no piso " + piso.Codigodopiso + " com codigo de vaga numero " + iddavaga;
+                            }
+                        }
+                    }
+
+                }
+
+
+            }
+
+            return "Vaga não atualizada";
+
+
+
+
+        }
+
         public string GetTodasAsVagas()
         {
             IMongoCollection<Mall> MALL = Banco.Conexao.DataBase.GetCollection<Mall>("Mall");

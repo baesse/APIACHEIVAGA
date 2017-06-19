@@ -63,6 +63,13 @@ namespace AcheiVaga.PI4.Controllers
             return mall.OcuparVaga(codigodavaga,codigodavaga);
         }
 
+        [HttpPost]
+        public string desocuparvaga(int codigodopiso, int codigodavaga,string desocupar)
+        {
+            Mall mall = new Mall();
+            return mall.Desocupar(codigodavaga, codigodavaga);
+        }
+
         [HttpGet]
         public string BuscarTodasAsvagas()
         {
